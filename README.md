@@ -21,6 +21,24 @@ Note, this does not affect push-notification responses when app is in the foregr
 
 The attached reproducer demonstrates this issue.
 
+
+
+| `"experimentalLauncherActivity": true`                               | `"experimentalLauncherActivity": false`                           |
+| --------------------------------- | --------------------------------- |
+|  <video src="https://github.com/user-attachments/assets/109c1294-21d7-47ab-9907-d4dbaaf06ba9" />    | <video src="https://github.com/user-attachments/assets/ba54f1dc-a6b5-4c37-af2c-e00a66d93fa0" /> |
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 ### STEPS TO REPRODUCE
