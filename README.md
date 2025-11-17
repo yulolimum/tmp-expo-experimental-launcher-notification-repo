@@ -1,6 +1,6 @@
 # tmp-expo-experimental-launcher-notification-repo
 
-## TLDR
+### TLDR
 
 - Affects Android, when tapping a push-notification in a killed/background state.
 - Push Notification "response" (i.e. event, action, click) does not work when using `expo-browser` with `experimentalLauncherActivity` enabled.
@@ -11,7 +11,7 @@
 
 ---
 
-## DESCRIPTION
+### DESCRIPTION
 
 Hello! I recently discovered that the push notification data/response gets swallowed by "something" and doesn't get returned in the methods/subscriptions when the app opens from a killed or background state from a push-notification tap. The response is always `undefined/null`.
 
@@ -23,9 +23,9 @@ The attached reproducer demonstrates this issue.
 
 ---
 
-## STEPS TO REPRODUCE
+### STEPS TO REPRODUCE
 
-#### Setup
+##### Setup
 
 1. Clone repo
 
@@ -53,7 +53,7 @@ The attached reproducer demonstrates this issue.
    pnpm prebuild && pnpm android
    ```
 
-#### Reproduce
+##### Reproduce
 
 1. Open app and allow push notification permissions.
 2. Copy the Expo Push Token.
@@ -69,7 +69,7 @@ The attached reproducer demonstrates this issue.
 6. (killed) Force close the app. Send another notification and tap on it when received.
    - Observe: The notification response is logged empty.
 
-#### Disable `experimentalLauncherActivity` and Compare
+##### Disable `experimentalLauncherActivity` and Compare
 
 1. In `app.json`, set `experimentalLauncherActivity` to `false`.
 2. Rebuild and run the app.
@@ -82,7 +82,7 @@ The attached reproducer demonstrates this issue.
 
 ---
 
-## ENV INFO
+### ENV INFO
 
 ```
   expo-env-info 2.0.7 environment info:
@@ -113,7 +113,7 @@ The attached reproducer demonstrates this issue.
 
 ---
 
-## EXPO DOCTOR
+### EXPO DOCTOR
 
 ```
 17/17 checks passed. No issues detected!
