@@ -1,50 +1,65 @@
-# Welcome to your Expo app 👋
+# tmp-expo-experimental-launcher-notification-repo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## TLDR
 
-## Get started
+- Affects Android, when tapping a push-notification in a killed/background state. 
+- Push Notification "response" (i.e. event, action, click) does not work when using `expo-browser` with `experimentalLauncherActivity` enabled.
+- This can be observed using any of these libraries:
+   - `expo-notification` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `useLastNotificationResponse` (or other subscriptions/methods)
+   - `@react-native-firebase/messaging` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `getInitialNotification` and `onNotificationOpenedApp`
+   - `@notifee/react-native` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `getInitialNotification` and `onForegroundEvent`
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## DESCRIPTION
 
-2. Start the app
+Hello! I recently discovered that the push notification data/response gets swallowed by "something" and doesn't get returned in the methods/subscriptions when the app opens from a killed or background state from a push-notification tap. The response is always `undefined/null`. 
 
-   ```bash
-   npx expo start
-   ```
+I went through an existing project and isolated the `expo-browser` with `experimentalLauncherActivity` setting as the culprit.
 
-In the output, you'll find options to open the app in a
+The attached reproducer demonstrates this issue.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## STEPS TO REPRODUCE
 
-## Get a fresh project
+todo:
 
-When you're ready, run:
+--- 
 
-```bash
-npm run reset-project
+## ENV INFO
+
+```
+  expo-env-info 2.0.7 environment info:
+    System:
+      OS: macOS 15.6
+      Shell: 5.9 - /bin/zsh
+    Binaries:
+      Node: 22.20.0 - ~/.asdf/installs/nodejs/22.20.0/bin/node
+      Yarn: 1.22.22 - ~/.asdf/installs/nodejs/22.20.0/bin/yarn
+      npm: 10.9.3 - ~/.asdf/plugins/nodejs/shims/npm
+    Managers:
+      CocoaPods: 1.16.2 - /Users/yulolimum/.asdf/shims/pod
+    SDKs:
+      iOS SDK:
+        Platforms: DriverKit 25.0, iOS 26.0, macOS 26.0, tvOS 26.0, visionOS 26.0, watchOS 26.0
+    IDEs:
+      Android Studio: 2025.1 AI-251.26094.121.2512.13840223
+      Xcode: 26.0.1/17A400 - /usr/bin/xcodebuild
+    npmPackages:
+      expo: ~54.0.23 => 54.0.23
+      expo-router: ~6.0.14 => 6.0.14
+      react: 19.1.0 => 19.1.0
+      react-dom: 19.1.0 => 19.1.0
+      react-native: 0.81.5 => 0.81.5
+      react-native-web: ~0.21.0 => 0.21.2
+    Expo Workflow: bare
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## EXPO DOCTOR
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
+17/17 checks passed. No issues detected!
+```
