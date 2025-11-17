@@ -2,20 +2,22 @@
 
 ## TLDR
 
-- Affects Android, when tapping a push-notification in a killed/background state. 
+- Affects Android, when tapping a push-notification in a killed/background state.
 - Push Notification "response" (i.e. event, action, click) does not work when using `expo-browser` with `experimentalLauncherActivity` enabled.
 - This can be observed using any of these libraries:
-   - `expo-notification` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `useLastNotificationResponse` (or other subscriptions/methods)
-   - `@react-native-firebase/messaging` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `getInitialNotification` and `onNotificationOpenedApp`
-   - `@notifee/react-native` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `getInitialNotification` and `onForegroundEvent`
+  - `expo-notification` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `useLastNotificationResponse` (or other subscriptions/methods)
+  - `@react-native-firebase/messaging` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `getInitialNotification` and `onNotificationOpenedApp`
+  - `@notifee/react-native` ([ref](https://rnfirebase.io/messaging/notifications#handling-interaction)): `getInitialNotification` and `onForegroundEvent`
 
 ---
 
 ## DESCRIPTION
 
-Hello! I recently discovered that the push notification data/response gets swallowed by "something" and doesn't get returned in the methods/subscriptions when the app opens from a killed or background state from a push-notification tap. The response is always `undefined/null`. 
+Hello! I recently discovered that the push notification data/response gets swallowed by "something" and doesn't get returned in the methods/subscriptions when the app opens from a killed or background state from a push-notification tap. The response is always `undefined/null`.
 
 I went through an existing project and isolated the `expo-browser` with `experimentalLauncherActivity` setting as the culprit.
+
+Note, this does not affect push-notification responses when app is in the foreground state (local notification tapped). Only when the app is in killed or background state.
 
 The attached reproducer demonstrates this issue.
 
@@ -23,9 +25,62 @@ The attached reproducer demonstrates this issue.
 
 ## STEPS TO REPRODUCE
 
-todo:
+#### Setup
 
---- 
+1. Clone repo
+
+   ```bash
+   git clone git@github.com:yulolimum/tmp-expo-experimental-launcher-notification-repo.git
+   cd tmp-expo-experimental-launcher-notification-repo
+   ```
+
+2. Install dependencies
+
+   ```bash
+   pnpm install
+   ```
+
+3. Update project with FCM and EAS information
+
+   - Add your `google-services.json` to root of project
+   - Update `app.json`:
+     - Set `expo.extra.eas.projectId` with an EAS project that is linked to Firebase
+     - Set `expo.android.package` with the one that matches your Firebase setup
+
+4. Run prebuild, build, and run the app
+
+   ```bash
+   pnpm prebuild && pnpm android
+   ```
+
+#### Reproduce
+
+1. Open app and allow push notification permissions.
+2. Copy the Expo Push Token.
+3. Open [Push Notification Tool](https://expo.dev/notifications) and fill out the following:
+   - Expo Push Token: (from step 2)
+   - Title: Test Notification
+   - Body: This is a test notification.
+   - Android Channel ID: general
+4. (foreground) Send the notification and tap on it when received.
+   - Observe: The notification response is logged correctly in the app.
+5. (background) Press the home button to send app to background. Send another notification and tap on it when received.
+   - Observe: The notification response is logged empty.
+6. (killed) Force close the app. Send another notification and tap on it when received.
+   - Observe: The notification response is logged empty.
+
+#### Disable `experimentalLauncherActivity` and Compare
+
+1. In `app.json`, set `experimentalLauncherActivity` to `false`.
+2. Rebuild and run the app.
+
+   ```bash
+   pnpm prebuild && pnpm android
+   ```
+
+3. Repeat the steps in "Reproduce" section.
+
+---
 
 ## ENV INFO
 
