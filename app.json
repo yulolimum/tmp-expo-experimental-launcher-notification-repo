@@ -8,12 +8,18 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.yulolimum.tmpexpoexperimentallaunchernotificationrepo",
+      "googleServicesFile": "./google-services.json",
+      "package": "CHANGE ME!!!!!!!",
       "predictiveBackGestureEnabled": false
     },
     "experiments": {
       "reactCompiler": true,
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "CHANGE ME!!!!!!!"
+      }
     },
     "icon": "./assets/images/icon.png",
     "ios": {
